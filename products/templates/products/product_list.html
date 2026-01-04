@@ -1,0 +1,130 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Product List{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product List - OPENBAZAR</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/products.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fff;
+      color: #111;
+      overflow-x: hidden;
+    }
+
+    .product-grid {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .product-item {
+      text-align: center;
+      border: 1px solid #ddd;
+      padding: 10px;
+      width: 150px;  /* Adjust as needed */
+    }
+
+    .product-item img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>PRODUCT LIST</h2>
+
+    <!-- FOODS & BAKERY Section -->
+    <section class="category">
+      <h3>FOODS & BAKERY</h3>
+      <div class="product-grid">
+        {% for product in foods_bakery %}
+        <a href="{% url 'products:product_detail' product.id %}">
+
+        <div class="product-item">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+          <img src="{% static 'home/image/default.jpg' %}" alt="No image">  <!-- Fallback if no image -->
+          {% endif %}
+          <h4>{{ product.name }}</h4>
+          <p>{{ product.description|truncatewords:10 }}</p>  <!-- Shorten description -->
+          <p>Price: ${{ product.price }}</p>
+        </div>
+        </a>
+        {% empty %}
+        <p>No products in this category yet.</p>
+        {% endfor %}
+      </div>
+      <a href="#">MORE ></a>
+    </section>
+
+    <!-- CROCHET Section -->
+    <section class="category">
+      <h3>CROCHET</h3>
+      <div class="product-grid">
+        {% for product in crochet %}
+        <a href="{% url 'products:product_detail' product.id %}">
+
+        <div class="product-item">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+          <img src="{% static 'home/image/default.jpg' %}" alt="No image">
+          {% endif %}
+          <h4>{{ product.name }}</h4>
+          <p>{{ product.description|truncatewords:10 }}</p>
+          <p>Price: ${{ product.price }}</p>
+        </div>
+        </a>
+        {% empty %}
+        <p>No products in this category yet.</p>
+        {% endfor %}
+      </div>
+      <a href="#">MORE ></a>
+    </section>
+
+    <!-- FASHION (CLOTHES) Section -->
+    <section class="category">
+      <h3>FASHION (CLOTHES)</h3>
+      <div class="product-grid">
+        {% for product in fashion_clothes %}
+        <a href="{% url 'products:product_detail' product.id %}">
+
+        <div class="product-item">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+          <img src="{% static 'home/image/default.jpg' %}" alt="No image">
+          {% endif %}
+          <h4>{{ product.name }}</h4>
+          <p>{{ product.description|truncatewords:10 }}</p>
+          <p>Price: ${{ product.price }}</p>
+        </div>
+        </a>
+        {% empty %}
+        <p>No products in this category yet.</p>
+        {% endfor %}
+      </div>
+      <a href="#">MORE ></a>
+    </section>
+  </main>
+</body>
+</html>
+{% endblock %}

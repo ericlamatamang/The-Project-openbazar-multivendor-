@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #4BB543; /* green success color */
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .order-details {
+            text-align: left;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn-home:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase, {{ order.user.username }}.</p>
+        <p>Your order ID is: <strong>#{{ order.id }}</strong></p>
+
+        <div class="order-details">
+            <h3>Order Summary:</h3>
+            <p><strong>Product(s):</strong></p>
+            <ul>
+                {% for item in order.items.all %}
+                    <li>{{ item.product.name }} x {{ item.quantity }} - ${{ item.total_price }}</li>
+                {% empty %}
+                    <li>No items found in this order.</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Total:</strong> ${{ order.total_amount }}</p>
+        </div>
+
+        <a href="/" class="btn-home">Back to Home</a>
+    </div>
+</body>
+</html>

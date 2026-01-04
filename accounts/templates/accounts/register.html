@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+<div class="login-box">
+    <h2>Create Account</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{% url 'accounts:register' %}">
+        {% csrf_token %}
+
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="first_name" placeholder="First Name" required>
+        <input type="text" name="last_name" placeholder="Last Name" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+
+        <button type="submit">Sign Up</button>
+
+        <p>
+            Already have an account?
+            <a href="{% url 'accounts:login' %}">Sign In</a>
+        </p>
+    </form>
+</div>
+
+{% endblock %}

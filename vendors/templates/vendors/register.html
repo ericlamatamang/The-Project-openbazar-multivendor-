@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Become Vendor{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="vendor-container">
+    <div class="vendor-card">
+        <h2>Become a Vendor</h2>
+        <p class="subtitle">Start selling your products on OpenBazar</p>
+
+        <form method="post" class="vendor-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-primary">
+                Become Vendor
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

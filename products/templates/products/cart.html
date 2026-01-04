@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+<div class="cart-container">
+    <h2 class="cart-title">My Cart</h2>
+
+    {% if cart.items.all %}
+    <div class="cart-table-wrapper">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ item.product.price }}</td>
+                    <td>
+                        <form action="{% url 'products:update_cart' item.id %}" method="post" class="quantity-form">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ item.total_price }}</td>
+                    <td>
+                        <a href="{% url 'products:remove_from_cart' item.id %}" class="remove-btn">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cart-summary">
+        <p><strong>Total Items:</strong> {{ cart.total_items }}</p>
+        <p><strong>Total Price:</strong> ${{ cart.total_price }}</p>
+        <a href="{% url 'products:checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <p class="empty-cart">Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

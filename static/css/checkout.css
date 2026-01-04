@@ -1,0 +1,123 @@
+/* ==========================
+   CHECKOUT PAGE CSS
+========================== */
+.checkout-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 50px auto;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+/* ==========================
+   ORDER SUMMARY
+========================== */
+.order-summary {
+  flex: 1 1 500px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.order-summary h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.item-quantity {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.order-total {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ==========================
+   PAYMENT SECTION
+========================== */
+.payment-section {
+  flex: 1 1 400px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.payment-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.payment-method input {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.payment-method label {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* PROCEED BUTTON */
+.proceed-btn {
+  margin-top: 20px;
+  padding: 15px 25px;
+  width: 100%;
+  background: #E53935;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.proceed-btn:hover {
+  background: #c62828;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+@media (max-width: 900px) {
+  .checkout-page {
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+  }
+}

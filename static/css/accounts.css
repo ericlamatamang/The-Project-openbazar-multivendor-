@@ -1,0 +1,133 @@
+/* Reset & base */
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+}
+
+/* Main container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 15px;
+}
+
+/* Card */
+.card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 14px;
+    padding: 35px 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.card h2 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 35px;
+    color: #1f2937;
+}
+
+/* Info rows */
+.info-group {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: #f8fafc;
+    margin-bottom: 18px;
+}
+
+/* Label */
+.info-label {
+    width: 160px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 15px;
+}
+
+/* Value */
+.info-value {
+    flex: 1;
+    background: #ffffff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+    font-size: 15px;
+}
+
+/* Buttons section */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* General button */
+.btn {
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    background: #1e3a8a;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Logout button */
+.btn-logout {
+    background: #ef4444;
+}
+
+.btn-logout:hover {
+    background: #dc2626;
+}
+
+/* Form fix */
+.buttons form {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-label {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        text-align: center;
+        width: 100%;
+    }
+}

@@ -1,0 +1,119 @@
+/* --- Cart Page Styling --- */
+
+.cart-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cart-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+}
+
+.cart-table-wrapper {
+    overflow-x: auto;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-table th {
+    background-color: #f4f4f4;
+    color: #555;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cart-table tr:hover {
+    background-color: #fafafa;
+}
+
+.quantity-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-form input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.quantity-form button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.quantity-form button:hover {
+    background-color: #333333;
+}
+
+.remove-btn {
+    color: #000000;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+    color: #d40000;
+}
+
+.cart-summary {
+    margin-top: 25px;
+    text-align: right;
+    font-size: 16px;
+    color: #333;
+}
+
+.cart-summary p {
+    margin-bottom: 8px;
+}
+
+.checkout-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 25px;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.checkout-btn:hover {
+    background-color: #1f1e1e;
+}
+
+.empty-cart {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-top: 40px;
+}

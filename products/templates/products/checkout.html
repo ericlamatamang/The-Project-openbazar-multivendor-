@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<div class="checkout-page">
+
+  <!-- LEFT: Order Summary -->
+  <div class="order-summary">
+    <h2>Order Summary</h2>
+    <div class="cart-items">
+      {% for item in cart_items %}
+      <div class="cart-item">
+        <div class="item-info">
+          <p class="item-name">{{ item.product.name }}</p>
+          <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+        </div>
+        <div class="item-price">${{ item.total_price }}</div>
+      </div>
+      {% empty %}
+        <p>Your cart is empty.</p>
+      {% endfor %}
+    </div>
+    <div class="order-total">
+      <p>Total: <span>${{ cart_total }}</span></p>
+    </div>
+  </div>
+
+  <!-- RIGHT: Payment & Proceed -->
+  <div class="payment-section">
+    <h2>Payment Method</h2>
+
+    <form action="#" method="post">
+      {% csrf_token %}
+
+      <div class="payment-method">
+        <input type="radio" id="esewa" name="payment_method" value="esewa" checked>
+        <label for="esewa">eSewa</label>
+      </div>
+
+      <div class="payment-method">
+        <input type="radio" id="khalti" name="payment_method" value="khalti">
+        <label for="khalti">Khalti</label>
+      </div>
+
+      <button type="submit" class="proceed-btn">Proceed to Payment</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

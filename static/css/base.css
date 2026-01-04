@@ -1,0 +1,97 @@
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: center;        /* 🔥 CENTER navbar content */
+  align-items: center;
+  background: white;
+  padding: 25px 0;                /* 🔥 BIG vertical space */
+}
+
+/* NAV CONTAINER (important) */
+.navbar nav {
+  display: flex;
+  gap: 90px;                      /* 🔥 SPACE BETWEEN LINKS */
+}
+
+
+      /* NAV LINKS ANIMATION */
+.navbar nav a {
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+
+
+footer {
+    padding: 20px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.hero {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-start;      /* 🔥 push content down */
+    justify-content: flex-start;
+    padding: 120px 80px;          /* 🔥 pushes text LOWER */
+    color: white;
+    background-color: rgba(0,0,0,0.45);
+    background-blend-mode: darken;
+}
+
+.hero-text {
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+}
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 25px;   /* 🔥 space under heading */
+}
+
+.hero h1 span {
+    color: red;
+}
+
+.hero p {
+    margin-bottom: 10px;
+    margin-bottom: 30px; 
+    line-height: 1.6;
+    font-size: 16px;
+    color: #f1f1f1;
+}
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.buttons .btn {
+    padding: 12px 24px;
+    background: white;
+    color: black;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.buttons .btn:hover {
+    background: #e63946;
+    color: white;
+}
+
+.buttons .btn-outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.buttons .btn-outline:hover {
+    background: white;
+    color: black;
+}

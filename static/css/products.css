@@ -1,0 +1,296 @@
+ .category {
+      padding: 3rem 8%;
+      text-align: center;
+      animation: fadeInUp 0.8s ease both;
+      margin-bottom: 1rem;
+    }
+
+    .category:nth-child(odd) {
+      background: #f8f3f3;
+    }
+
+    .category:nth-child(even) {
+      background: #eee6e6;
+    }
+
+    .category h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;   /* Centered heading */
+    }
+
+    /* PRODUCT GRIDS */
+    .foods, .product-grid {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .foods img, .product-grid img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .foods img:hover, .product-grid img:hover {
+      transform: scale(1.05) translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    /* MORE LINK */
+    .category a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      text-decoration: none;
+      color: #000000;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .category a:hover {
+      color: #2a9bf2;
+      transform: translateY(-2px);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* PRODUCT DETAIL PAGE */
+.product-detail {
+  max-width: 1000px;
+  margin: 4rem auto;
+  padding: 3rem;
+  background: #f8f3f3;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  animation: fadeInUp 0.8s ease both;
+  text-align: center;
+}
+
+/* IMAGE */
+.product-detail img {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.product-detail img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+}
+
+/* TITLE */
+.product-detail h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  color: #111;
+}
+
+/* INFO TEXT */
+.product-detail p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+
+.product-detail p strong {
+  color: #111;
+  font-weight: 600;
+}
+
+/* PRICE */
+.product-detail p:nth-of-type(4) {
+  font-size: 1.3rem;
+  color: #e63946;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+/* BACK BUTTON */
+.back-link {
+    background-color: #f4f4f4; /* Dark black/navy background */
+    color: #000000;            /* White text */
+    border: none;
+    padding: 12px 32px;        /* Vertical and Horizontal spacing */
+    border-radius: 50px;       /* Creates the pill/oval shape */
+    
+    /* Typography */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    
+    /* Layout and Interaction */
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-link:hover {
+  background: #625f5f;
+}
+
+.back-link:active {
+  transform: scale(0.98);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .product-detail {
+    padding: 2rem 1.5rem;
+  }
+
+  .product-detail img {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-detail h1 {
+    font-size: 2rem;
+  }
+}
+/* PRODUCT PAGE LAYOUT */
+.product-page {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 5%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* IMAGE */
+.product-images img {
+  width: 100%;
+  border: 1px solid #eee;
+}
+
+/* INFO */
+.product-info {
+  font-family: 'Poppins', sans-serif;
+}
+
+.breadcrumb {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+.product-info h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.6rem;
+  margin: 1.5rem 0;
+}
+
+/* OPTIONS */
+.option {
+  margin-bottom: 1.5rem;
+}
+
+.option label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* COLORS */
+.colors {
+  display: flex;
+  gap: 10px;
+}
+
+.color {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+
+/* QUANTITY */
+.quantity-box {
+  display: inline-flex;
+  border: 1px solid #ccc;
+}
+
+.quantity-box button {
+  width: 35px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.quantity-box input {
+  width: 50px;
+  border: none;
+  text-align: center;
+}
+
+.add-to-cart {
+ /* Background and Shape */
+    background-color: #f4f4f4; /* Dark black/navy background */
+    color: #000000;            /* White text */
+    border: none;
+    padding: 12px 32px;        /* Vertical and Horizontal spacing */
+    border-radius: 50px;       /* Creates the pill/oval shape */
+    
+    /* Typography */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    
+    /* Layout and Interaction */
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background: #625f5f;
+}
+
+.add-to-cart:active {
+  transform: scale(0.98);
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .product-page {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,79 @@
+/* Page layout */
+.vendor-container {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 16px;
+}
+
+/* Card */
+.vendor-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.vendor-card h2 {
+    text-align: center;
+    margin-bottom: 6px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* Subtitle */
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 24px;
+}
+
+/* Form */
+.vendor-form p {
+    margin-bottom: 16px;
+}
+
+.vendor-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.vendor-form input,
+.vendor-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.vendor-form input:focus,
+.vendor-form textarea:focus {
+    outline: none;
+    border-color: #e63946;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #d62839;
+}

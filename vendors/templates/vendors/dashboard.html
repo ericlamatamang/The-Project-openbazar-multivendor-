@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Vendor Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/vendors.css' %}">
+
+<div class="vendor-dashboard">
+
+    <h1>Vendor Dashboard</h1>
+    <p class="subtitle">Manage your store and products</p>
+
+    {% if not vendor.is_approved %}
+        <div class="pending-approval">
+            ⏳ Your vendor account is pending admin approval.
+        </div>
+    {% else %}
+        <div class="dashboard-cards">
+
+            <div class="card">
+                <h3>My Products</h3>
+                <p>View and manage all your listed products.</p>
+                <a href="{% url 'products:vendor_products' %}" class="btn">
+                    View Products
+                </a>
+            </div>
+
+            <div class="card">
+                <h3>Add Product</h3>
+                <p>Add a new product to your store.</p>
+                <a href="{% url 'products:add_product' %}" class="btn">
+                    Add Product
+                </a>
+            </div>
+
+            <div class="card">
+                <h3>My Profile</h3>
+                <p>View your vendor details.</p>
+                <a href="{% url 'accounts:profile' %}" class="btn">
+                    Go to Profile
+                </a>
+            </div>
+
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

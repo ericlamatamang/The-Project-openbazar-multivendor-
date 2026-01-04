@@ -1,0 +1,95 @@
+/* Page spacing */
+.container {
+  max-width: 700px;
+}
+
+/* Title */
+.container h2 {
+  font-weight: 600;
+  color: #222;
+  letter-spacing: 0.3px;
+}
+
+/* Form wrapper */
+form.add {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Labels */
+form.add label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* Inputs, select, textarea */
+form.add .form-control,
+form.add select {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  transition: 0.2s ease;
+}
+
+/* Focus effect */
+form.add .form-control:focus,
+form.add select:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+/* Select dropdown */
+form.add select {
+  background-color: #fff;
+}
+
+/* Textarea */
+form.add textarea {
+  resize: none;
+}
+
+/* Buttons */
+/* Stack buttons vertically */
+form.add .btn {
+  display: block;
+  width: fit-content;
+}
+
+form.add .btn + .btn {
+  margin-top: 12px;   /* vertical gap */
+}
+
+
+form.add .btn-primary {
+  background: #060606;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+form.add .btn-primary:hover {
+  background: #747272;
+  transform: translateY(-1px);
+}
+
+/* Cancel button */
+form.add .btn-secondary {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  background: #ff0000;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  form.add {
+    padding: 22px;
+  }
+}
