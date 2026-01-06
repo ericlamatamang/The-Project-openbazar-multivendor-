@@ -21,7 +21,6 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
       background: #fff;
       color: #111;
       overflow-x: hidden;
@@ -65,7 +64,7 @@
           {% endif %}
           <h4>{{ product.name }}</h4>
           <p>{{ product.description|truncatewords:10 }}</p>  <!-- Shorten description -->
-          <p>Price: ${{ product.price }}</p>
+          <p>Price: RS{{ product.price }}</p>
         </div>
         </a>
         {% empty %}
@@ -90,7 +89,7 @@
           {% endif %}
           <h4>{{ product.name }}</h4>
           <p>{{ product.description|truncatewords:10 }}</p>
-          <p>Price: ${{ product.price }}</p>
+          <p>Price: RS{{ product.price }}</p>
         </div>
         </a>
         {% empty %}
@@ -115,7 +114,7 @@
           {% endif %}
           <h4>{{ product.name }}</h4>
           <p>{{ product.description|truncatewords:10 }}</p>
-          <p>Price: ${{ product.price }}</p>
+          <p>Price: RS{{ product.price }}</p>
         </div>
         </a>
         {% empty %}

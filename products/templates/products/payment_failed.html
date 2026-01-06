@@ -1,0 +1,7 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2 style="color:red;">❌ Payment Failed</h2>
+<p>Please try again.</p>
+<a href="{% url 'products:cart' %}">Back to Cart</a>
+{% endblock %}

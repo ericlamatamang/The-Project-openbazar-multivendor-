@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from .views import (
+    my_orders,
     register_view,
     login_view,
     logout_view,
@@ -18,5 +19,7 @@ urlpatterns = [
     path("profile/edit/", edit_profile_view, name="edit_profile"),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('vendors/', include('vendors.urls')),
+    path("orders/", my_orders, name="my_orders"),
+
 
 ]

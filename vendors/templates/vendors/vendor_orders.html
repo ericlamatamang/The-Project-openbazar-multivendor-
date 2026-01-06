@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Vendor Orders{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/vendors_order.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="orders-container">
+    {% for item in order_items %}
+    <div class="order-card">
+        <div>Order ID: {{ item.order.id }}</div>
+        <div>Product: {{ item.product.name }}</div>
+        <div>Buyer: {{ item.order.buyer.username }}</div>
+        <div>Quantity: {{ item.quantity }}</div>
+        <div>Price: RS{{ item.price }}</div>
+        <div>Ordered At: {{ item.order.created_at|date:"M d, Y H:i" }}</div>
+        <div>address: {{ item.order.buyer.profile.address }}</div>
+        <div>
+            {% if item.is_completed %}
+                <span class="status-completed">Completed</span>
+            {% else %}
+                <span class="status-pending">Pending</span>
+            {% endif %}
+        </div>
+        <div>
+            {% if not item.is_completed %}
+            <a href="{% url 'vendors:complete_order_item' item.id %}" class="mark-complete">Mark Complete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p style="text-align:center; color:#666;">No orders yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align:center; margin-bottom:20px;">My Orders</h1>
+
+<div class="orders-container-buyer">
+    {% for order in orders %}
+    <div class="order-card-buyer">
+        <h2>Order #{{ order.id }} - {{ order.ordered_at|date:"M d, Y H:i" }}</h2>
+
+        <!-- Optional: buyer address -->
+        {% if order.buyer.profile.address %}
+        <p style="font-size:13px; color:#555;">📍 {{ order.buyer.profile.address }}</p>
+        {% endif %}
+
+        <ul class="order-items-list">
+            {% for item in order.items.all %}
+            <li class="order-item">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="order-item-img">
+                <div class="order-item-details">
+                    <p class="item-name">{{ item.product.name }}</p>
+                    <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+                    <p class="item-price">Price: RS{{ item.price }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <p>
+            Status: 
+            {% if order.is_completed %}
+                <span class="status-completed">✅ Completed</span>
+            {% else %}
+                <span class="status-pending">⏳ Pending</span>
+            {% endif %}
+        </p>
+    </div>
+    {% empty %}
+    <p style="text-align:center; color:#666;">You have no orders yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

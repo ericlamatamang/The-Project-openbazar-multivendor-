@@ -1,0 +1,89 @@
+/* Modern minimalistic order cards */
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+}
+
+/* Container */
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 900px;
+}
+
+/* Individual card */
+.order-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* Labels */
+.order-card div {
+    font-size: 14px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+/* Status badges */
+.status-completed {
+    color: #28a745;
+    background-color: #e6f4ea;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.status-pending {
+    color: #d39e00;
+    background-color: #fff4e5;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Action button */
+a.mark-complete {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+a.mark-complete:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive: stack cards on small screens */
+@media (max-width: 768px) {
+    .order-card {
+        grid-template-columns: 1fr;
+        grid-row-gap: 10px;
+    }
+
+    a.mark-complete {
+        width: 100%;
+        text-align: center;
+    }
+}

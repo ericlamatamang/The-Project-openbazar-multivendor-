@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Vendor
-from products.models import Product  # Correct import
+from products.models import Order, OrderItem, Product  # Correct import
 from .forms import VendorForm
 from django.contrib import messages
 
@@ -92,3 +92,44 @@ def sell_now(request):
     
     return render(request, 'vendors/register.html', {'form': form})
 
+@login_required
+def vendor_orders(request):
+    vendor = request.user.vendor_account
+
+    # Get all order items that belong to this vendor
+    order_items = OrderItem.objects.filter(vendor=vendor).select_related(
+        "order", "product", "order__buyer"
+    ).order_by('-order__created_at')  # optional: newest first
+
+    return render(request, "vendors/vendor_orders.html", {
+        "order_items": order_items
+    })
+
+@login_required
+def complete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    # Optional: check if this order belongs to this vendor
+    vendor = request.user.vendor_account
+    if not OrderItem.objects.filter(order=order, product__vendor=vendor).exists():
+        messages.error(request, "You cannot approve this order.")
+        return redirect("vendors:vendor_orders")
+
+    order.is_completed = True  # Mark complete
+    order.save()
+    messages.success(request, "Order marked as completed!")
+    return redirect("vendors:vendor_orders")
+
+@login_required
+def complete_order_item(request, item_id):
+    item = get_object_or_404(OrderItem, id=item_id, vendor=request.user.vendor_account)
+    item.is_completed = True
+    item.save()
+
+    # Check if all items of the order are completed
+    order = item.order
+    if not order.items.filter(is_completed=False).exists():
+        order.is_completed = True
+        order.save()
+
+    return redirect("vendors:vendor_orders")

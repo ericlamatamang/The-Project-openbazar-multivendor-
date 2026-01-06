@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}delete_product{% endblock %}
+
+{% block content %}
+
+<h2>Delete Product</h2>
+<p>Are you sure you want to delete "{{ product.name }}"?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, Delete</button>
+  <a href="{% url 'products:vendor_products' %}">Cancel</a>
+</form>
+{% endblock %}

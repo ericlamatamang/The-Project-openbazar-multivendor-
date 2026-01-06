@@ -46,6 +46,12 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-logout">Logout</button>
             </form>
+
+            {% if user.is_authenticated and user.vendor_account %}
+                 <a href="{% url 'vendors:vendor_orders' %}" class="btn btn-primary">
+                 Vendor Orders
+                 </a>
+            {% endif %}
         </div>
 
     </div>

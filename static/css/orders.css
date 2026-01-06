@@ -1,0 +1,113 @@
+/* Buyer Orders - Modern card style */
+.orders-container-buyer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 900px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* Individual order card */
+.order-card-buyer {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card-buyer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.order-card-buyer h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+/* Order item list */
+.order-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.order-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #222;
+}
+
+.item-quantity, .item-price {
+    font-size: 13px;
+    color: #555;
+}
+
+/* Status badge */
+.status-completed {
+    color: #28a745;
+    background-color: #e6f4ea;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-pending {
+    color: #d39e00;
+    background-color: #fff4e5;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .order-card-buyer {
+        padding: 15px;
+    }
+
+    .order-card-buyer h2 {
+        font-size: 16px;
+    }
+
+    .order-item {
+        gap: 10px;
+    }
+
+    .order-item-img {
+        width: 50px;
+        height: 50px;
+    }
+}

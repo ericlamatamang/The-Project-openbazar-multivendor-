@@ -1,0 +1,50 @@
+/* ---------- Delete Product ---------- */
+.delete-container {
+    max-width: 450px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.delete-container h2 {
+    color: #dc2626;
+    margin-bottom: 15px;
+}
+
+.delete-container p {
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.delete-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-delete {
+    background: #dc2626;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #9ca3af;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.confirm-delete:hover {
+    background: #b91c1c;
+}
+
+.cancel-btn:hover {
+    background: #6b7280;
+}

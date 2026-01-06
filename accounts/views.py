@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from products.models import Product
+from products.models import Order, Product
 from .models import Profile
 from products.views import Cart 
 from vendors.models import Vendor
@@ -123,4 +123,8 @@ def edit_profile_view(request):
 
     return render(request, "accounts/edit_profile.html", {"profile": profile})
 
-
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(buyer=request.user).order_by("-created_at")
+    
+    return render(request, "accounts/my_orders.html", {"orders": orders})

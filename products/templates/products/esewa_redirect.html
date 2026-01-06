@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Redirecting to eSewa...</h2>
+<p>Please wait while we redirect you to eSewa payment gateway.</p>
+<p><strong>Order #{{ transaction_uuid }}</strong></p>
+<p><strong>Amount: Rs {{ total_amount }}</strong></p>
+
+<!-- Auto-submit form to eSewa -->
+<form id="esewaForm" action="{{ esewa_url }}" method="POST">
+    <input type="hidden" name="amount" value="{{ amount }}">
+    <input type="hidden" name="tax_amount" value="{{ tax_amount }}">
+    <input type="hidden" name="total_amount" value="{{ total_amount }}">
+    <input type="hidden" name="transaction_uuid" value="{{ transaction_uuid }}">
+    <input type="hidden" name="product_code" value="{{ product_code }}">
+    <input type="hidden" name="product_service_charge" value="{{ product_service_charge }}">
+    <input type="hidden" name="product_delivery_charge" value="{{ product_delivery_charge }}">
+    <input type="hidden" name="success_url" value="{{ success_url }}">
+    <input type="hidden" name="failure_url" value="{{ failure_url }}">
+    <input type="hidden" name="signed_field_names" value="{{ signed_field_names }}">
+    <input type="hidden" name="signature" value="{{ signature }}">
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <button type="submit" style="background-color: #55acee; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            Click here if not redirected automatically
+        </button>
+    </div>
+</form>
+
+<script>
+// Auto-submit form after 2 seconds
+setTimeout(function() {
+    document.getElementById("esewaForm").submit();
+}, 2000);
+</script>
+
+<style>
+.loading {
+    text-align: center;
+    margin: 40px 0;
+}
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #55acee;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<div class="loading">
+    <div class="loading-spinner"></div>
+    <p>Redirecting to eSewa...</p>
+</div>
+
+{% endblock %}

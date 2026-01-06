@@ -1,0 +1,95 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h2>Khalti Keys Verification</h2>
+
+<div class="card" style="padding: 20px; margin: 20px 0; background: #f8f9fa; border-radius: 10px;">
+    <h3>Current Configuration</h3>
+    <p><strong>Public Key:</strong> {{ public_key }}</p>
+    <p><strong>Public Key Length:</strong> {{ public_key_length }} characters</p>
+    <p><strong>Public Key Prefix:</strong> {{ public_key_prefix }}</p>
+    <p><strong>Secret Key (first 10 chars):</strong> {{ secret_key }}</p>
+    <p><strong>Secret Key Length:</strong> {{ secret_key_length }} characters</p>
+    
+    <h4>Key Validation</h4>
+    {% if public_key_prefix != "test" and public_key_prefix != "live" %}
+        <div style="color: red; padding: 10px; background: #ffe6e6; border-radius: 5px;">
+            ❌ <strong>INVALID KEY FORMAT:</strong> Public key should start with either "test_" or "live_"
+        </div>
+    {% elif public_key_prefix == "test" %}
+        <div style="color: green; padding: 10px; background: #e6ffe6; border-radius: 5px;">
+            ✅ Public key is in TEST format (starts with "test_")
+        </div>
+    {% elif public_key_prefix == "live" %}
+        <div style="color: orange; padding: 10px; background: #fff3cd; border-radius: 5px;">
+            ⚠️ Public key is in LIVE format (starts with "live_") - Make sure you're in production
+        </div>
+    {% endif %}
+    
+    {% if api_test_error %}
+        <div style="color: red; padding: 10px; background: #ffe6e6; border-radius: 5px;">
+            ❌ API Test Error: {{ api_test_error }}
+        </div>
+    {% endif %}
+    
+    {% if api_test_status %}
+        <p><strong>API Test Status:</strong> {{ api_test_status }}</p>
+        <p><strong>API Response:</strong> {{ api_test_response }}</p>
+    {% endif %}
+</div>
+
+<h3>Test Khalti Widget</h3>
+<button onclick="testKhaltiWidget()" style="background: #5C2D91; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    Test Khalti Widget
+</button>
+
+<div id="test-result" style="margin-top: 20px;"></div>
+
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+<script>
+function testKhaltiWidget() {
+    var config = {
+        "publicKey": "{{ public_key }}",
+        "productIdentity": "test_order_123",
+        "productName": "Test Product",
+        "productUrl": window.location.href,
+        "paymentPreference": ["KHALTI"],
+        "eventHandler": {
+            onSuccess(payload) {
+                document.getElementById("test-result").innerHTML = 
+                    '<div style="color: green; padding: 15px; background: #d4edda; border-radius: 5px;">✅ Widget loaded successfully! Payment token: ' + payload.token + '</div>';
+                console.log("Test success:", payload);
+            },
+            onError(error) {
+                let errorMsg = JSON.stringify(error, null, 2);
+                document.getElementById("test-result").innerHTML = 
+                    '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">❌ Error: ' + errorMsg + '</div>';
+                console.log("Test error:", error);
+            },
+            onClose() {
+                console.log("Test widget closed");
+            }
+        }
+    };
+    
+    try {
+        var checkout = new KhaltiCheckout(config);
+        checkout.show({
+            amount: 1000, // Rs 10 in paisa
+            mobile: "9800000000" // Test mobile number
+        });
+    } catch (e) {
+        document.getElementById("test-result").innerHTML = 
+            '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">❌ Exception: ' + e.toString() + '</div>';
+    }
+}
+</script>
+
+<h3>Instructions</h3>
+<ol>
+    <li>Make sure your public key starts with <code>test_</code> for testing</li>
+    <li>Get new keys from <a href="https://dev.khalti.com/" target="_blank">Khalti Dev Portal</a></li>
+    <li>Copy the exact key without any extra spaces</li>
+    <li>Test with mobile: <strong>9800000000</strong> and MPIN: <strong>1111</strong></li>
+</ol>
+
+{% endblock %}

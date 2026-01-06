@@ -123,7 +123,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-
+ESEWA_MERCHANT_CODE = "epay_payment"  # Test merchant code
+ESEWA_API_URL = "https://esewa.com.np/epay/main"  
+# For TEST environment
+KHALTI_PUBLIC_KEY = "test_public_key_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+KHALTI_SECRET_KEY = "test_secret_key_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

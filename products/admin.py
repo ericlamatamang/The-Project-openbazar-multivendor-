@@ -45,9 +45,9 @@ class CartItemAdmin(admin.ModelAdmin):
 # -------------------
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'total_amount', 'payment_method', 'is_paid', 'created_at')
+    list_display = ('id', 'buyer', 'total_amount', 'payment_method', 'is_paid', 'created_at')
     list_filter = ('payment_method', 'is_paid')
-    search_fields = ('user__username',)
+    search_fields = ('buyer__username',)
     ordering = ('-created_at',)
 
 @admin.register(OrderItem)

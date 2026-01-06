@@ -1,0 +1,179 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Pay with Khalti</h2>
+<div class="payment-info">
+    <p><strong>Order #{{ order.id }}</strong></p>
+    <p><strong>Total: Rs {{ order.total_amount }}</strong></p>
+</div>
+
+<!-- Show key info for debugging -->
+<div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 12px;">
+    <strong>Debug Info:</strong> 
+    Key: {{ KHALTI_PUBLIC_KEY|slice:":20" }}... 
+    ({{ KHALTI_PUBLIC_KEY|length }} chars)
+    {% if KHALTI_PUBLIC_KEY|slice:":5" != "test_" and KHALTI_PUBLIC_KEY|slice:":5" != "live_" %}
+        <span style="color: red;">⚠️ Key format may be incorrect</span>
+    {% endif %}
+</div>
+
+<div id="payment-status"></div>
+
+<!-- Load Khalti from official CDN -->
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+
+<button id="payBtn" style="background-color: #5C2D91; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+    Pay Rs {{ order.total_amount|floatformat:2 }}
+</button>
+
+<script>
+// Log key for debugging
+console.log("Khalti Public Key (first 30 chars):", "{{ KHALTI_PUBLIC_KEY|slice:":30" }}");
+console.log("Full key length:", "{{ KHALTI_PUBLIC_KEY|length }}");
+console.log("Order ID:", "{{ order.id }}");
+
+// Initialize Khalti Checkout
+var config = {
+    "publicKey": "{{ KHALTI_PUBLIC_KEY }}",
+    "productIdentity": "{{ order.id }}",
+    "productName": "Order #{{ order.id }}",
+    "productUrl": "{{ request.build_absolute_uri }}",
+    "paymentPreference": ["KHALTI", "EBANKING", "MOBILE_BANKING", "CONNECT_IPS", "SCT"],
+    "eventHandler": {
+        onSuccess(payload) {
+            console.log("Payment successful:", payload);
+            document.getElementById("payment-status").innerHTML = 
+                '<div style="color: green; padding: 15px; background: #d4edda; border-radius: 5px;">Payment successful! Verifying...</div>';
+            
+            // Send to backend for verification
+            fetch("{% url 'products:khalti_verify' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                    token: payload.token,
+                    amount: payload.amount,
+                    order_id: "{{ order.id }}"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    document.getElementById("payment-status").innerHTML = 
+                        '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">Verification failed: ' + (data.error || 'Unknown error') + '</div>';
+                }
+            })
+            .catch(error => {
+                document.getElementById("payment-status").innerHTML = 
+                    '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">Network error: ' + error + '</div>';
+            });
+        },
+        onError(error) {
+            console.error("Khalti error:", error);
+            let errorMsg = "Payment failed";
+            
+            if (error && error.message) {
+                errorMsg += ": " + error.message;
+            } else if (error && error.detail) {
+                errorMsg += ": " + error.detail;
+            }
+            
+            document.getElementById("payment-status").innerHTML = 
+                '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">' + errorMsg + '</div>';
+            
+            // If it's a key error, suggest checking
+            if (errorMsg.includes("public_key") || errorMsg.includes("Invalid key")) {
+                document.getElementById("payment-status").innerHTML += 
+                    '<p style="margin-top: 10px;">⚠️ <strong>Key Error Detected!</strong> Please check your Khalti public key in settings.</p>' +
+                    '<p><a href="{% url "products:verify_khalti" %}" style="color: #5C2D91;">Click here to verify your keys</a></p>';
+            }
+        },
+        onClose() {
+            console.log("Payment widget closed");
+        }
+    }
+};
+
+// Create checkout instance
+var checkout = null;
+try {
+    checkout = new KhaltiCheckout(config);
+    console.log("Khalti checkout initialized successfully");
+} catch (error) {
+    console.error("Failed to initialize Khalti:", error);
+    document.getElementById("payment-status").innerHTML = 
+        '<div style="color: red; padding: 15px; background: #f8d7da; border-radius: 5px;">Failed to initialize payment: ' + error.message + '</div>';
+}
+
+// Pay button handler
+document.getElementById("payBtn").onclick = function () {
+    if (!checkout) {
+        alert("Payment system not initialized. Please refresh the page.");
+        return;
+    }
+    
+    var amountInPaisa = Math.round({{ order.total_amount|floatformat:2 }} * 100);
+    console.log("Amount in paisa:", amountInPaisa);
+    
+    // Show checkout - let user enter their own mobile
+    checkout.show({ 
+        amount: amountInPaisa
+    });
+};
+
+// CSRF helper
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+<style>
+.payment-info {
+    background: linear-gradient(135deg, #5C2D91, #8a4dc7);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(92, 45, 145, 0.2);
+}
+.payment-info p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+#payBtn {
+    background: linear-gradient(135deg, #5C2D91, #8a4dc7);
+    color: white;
+    padding: 18px 40px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(92, 45, 145, 0.3);
+}
+#payBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(92, 45, 145, 0.4);
+}
+#payBtn:active {
+    transform: translateY(0);
+}
+</style>
+
+{% endblock %}

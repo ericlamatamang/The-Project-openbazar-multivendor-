@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h2>Test eSewa Integration</h2>
+
+<div style="background: #e8f4fc; padding: 20px; border-radius: 10px; margin: 20px 0;">
+    <h3>Test eSewa Payment</h3>
+    <p><strong>Test Amount:</strong> Rs 10</p>
+    <p><strong>Test Order ID:</strong> test_{{ request.user.id }}_{{ timestamp }}</p>
+    
+    <form method="POST" action="{% url 'products:test_esewa_initiate' %}">
+        {% csrf_token %}
+        <input type="hidden" name="amount" value="10">
+        <input type="hidden" name="order_id" value="test_{{ request.user.id }}_{{ timestamp }}">
+        
+        <button type="submit" style="background-color: #55acee; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            Test eSewa Payment (Rs 10)
+        </button>
+    </form>
+</div>
+
+<div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+    <h4>Test Instructions:</h4>
+    <ol>
+        <li>Click the test button above</li>
+        <li>You'll be redirected to eSewa UAT (test environment)</li>
+        <li>Use test credentials:
+            <ul>
+                <li><strong>Mobile:</strong> Any Nepali number (e.g., 9800000000)</li>
+                <li><strong>MPIN:</strong> nepal</li>
+            </ul>
+        </li>
+        <li>Complete the payment (it's simulated, no real money)</li>
+        <li>You'll be redirected back to success page</li>
+    </ol>
+</div>
+{% endblock %}
