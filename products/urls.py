@@ -29,6 +29,9 @@ urlpatterns = [
     path("esewa/success/", views.esewa_success, name="esewa_success"),
     path("esewa/failure/", views.esewa_failure, name="esewa_failure"),
     path('test-esewa/', views.test_esewa_initiate, name='test_esewa_initiate'),
+    # eSewa URLs
+    path('esewa-simple/<int:order_id>/', views.esewa_simple, name='esewa_simple'),
+    path('esewa/verify/', views.esewa_verify, name='esewa_verify'),
     
     # Khalti URLs
     path("khalti-demo/<int:order_id>/", views.khalti_demo, name="khalti_demo"),

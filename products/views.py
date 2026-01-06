@@ -316,16 +316,15 @@ def checkout(request):
         )
 
         if payment_method == "khalti":
-            # Use our simple Khalti page with test credentials
             return redirect("products:khalti_simple", order_id=order.id)
         elif payment_method == "esewa":
-            return redirect("products:esewa_payment", order_id=order.id)
+            return redirect("products:esewa_simple", order_id=order.id)  # Updated this line
         elif payment_method == "cod":
             # Cash on Delivery
             order.is_paid = True
             order.save()
             
-            # Create payment record for COD
+            # Create payment record
             Payment.objects.create(
                 order=order,
                 payment_method="cod",
@@ -333,7 +332,7 @@ def checkout(request):
                 status="pending"
             )
             
-            # Move cart items to OrderItems
+            # Move cart items
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -347,8 +346,6 @@ def checkout(request):
             cart_items.delete()
             
             return redirect("products:payment_success", order_id=order.id)
-        else:
-            return redirect("products:process_payment", order_id=order.id)
 
     return render(request, "products/checkout.html", {
         "cart_items": cart_items,
@@ -647,3 +644,99 @@ def khalti_simple(request, order_id):
     return render(request, "products/khalti_simple.html", {
         "order": order
     })
+    
+
+@login_required
+def esewa_simple(request, order_id):
+    """Simple eSewa payment page with test credentials"""
+    order = get_object_or_404(Order, id=order_id, buyer=request.user)
+    return render(request, "products/esewa_simple.html", {
+        "order": order
+    })
+
+@csrf_exempt
+def esewa_verify(request):
+    """Verify eSewa payment - with test credentials bypass"""
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            mobile = data.get("mobile", "")
+            pin = data.get("pin", "")
+            order_id = data.get("order_id")
+            
+            print(f"eSewa verify called: order={order_id}, mobile={mobile}")
+            
+            if not order_id:
+                return JsonResponse({
+                    "success": False, 
+                    "error": "Order ID is required"
+                })
+            
+            # Get the order
+            try:
+                order = Order.objects.get(id=order_id, buyer=request.user)
+                print(f"Order found: {order.id}, amount: {order.total_amount}")
+            except Order.DoesNotExist:
+                return JsonResponse({
+                    "success": False, 
+                    "error": "Order not found"
+                })
+            
+            # ✅ TEST MODE: Accept payment if mobile is 9800000000 and PIN is 1111
+            if mobile == "9800000000" and pin == "1111":
+                # ✅ Mark order as paid
+                order.is_paid = True
+                order.payment_method = "esewa"
+                order.save()
+                
+                # ✅ Create payment record
+                Payment.objects.create(
+                    order=order,
+                    payment_method="esewa",
+                    transaction_id=f"esewa_test_{order.id}_{int(time.time())}",
+                    amount=order.total_amount,
+                    status="success"
+                )
+                
+                # ✅ Move cart items to OrderItems
+                try:
+                    cart = Cart.objects.get(user=order.buyer)
+                    cart_items = CartItem.objects.filter(cart=cart)
+                    
+                    for item in cart_items:
+                        OrderItem.objects.create(
+                            order=order,
+                            product=item.product,
+                            vendor=item.product.vendor,
+                            quantity=item.quantity,
+                            price=item.product.price
+                        )
+                    
+                    # ✅ Clear cart
+                    cart_items.delete()
+                    print(f"Cart cleared for order {order.id}")
+                    
+                except Exception as e:
+                    print(f"Error moving cart items: {str(e)}")
+                
+                return JsonResponse({
+                    "success": True, 
+                    "redirect_url": reverse("products:payment_success", kwargs={"order_id": order.id}),
+                    "message": "eSewa payment successful using test credentials!"
+                })
+            else:
+                return JsonResponse({
+                    "success": False, 
+                    "error": "Invalid test credentials. Use mobile: 9800000000, PIN: 1111"
+                })
+                
+        except Exception as e:
+            print(f"Error in esewa_verify: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({
+                "success": False, 
+                "error": f"Server error: {str(e)}"
+            })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})

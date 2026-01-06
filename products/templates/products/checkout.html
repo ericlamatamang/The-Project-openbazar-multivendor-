@@ -10,182 +10,775 @@
 
   <!-- LEFT: Order Summary -->
   <div class="order-summary">
-    <h2>Order Summary</h2>
+    <div class="summary-header">
+      <h2>Order Summary</h2>
+      <a href="{% url 'products:cart' %}" class="edit-cart">Edit Cart</a>
+    </div>
+    
     <div class="cart-items">
       {% for item in cart_items %}
       <div class="cart-item">
+        {% if item.product.image %}
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="item-image">
+        {% endif %}
         <div class="item-info">
           <p class="item-name">{{ item.product.name }}</p>
           <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+          <p class="item-price-unit">Rs {{ item.product.price }} each</p>
         </div>
-        <div class="item-price">Rs{{ item.total_price }}</div>
+        <div class="item-price-total">Rs {{ item.total_price }}</div>
       </div>
       {% empty %}
+      <div class="empty-cart">
         <p>Your cart is empty.</p>
+        <a href="{% url 'products:product_list' %}" class="btn-shop">Continue Shopping</a>
+      </div>
       {% endfor %}
     </div>
-    <div class="order-total">
-      <p><strong>Total:</strong> Rs {{ total }}</p>
-      <input type="hidden" name="total" value="{{ total }}">
+    
+    <div class="order-total-section">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span>Rs {{ total }}</span>
+      </div>
+      <div class="total-row">
+        <span>Shipping</span>
+        <span>Free</span>
+      </div>
+      <div class="total-row grand-total">
+        <span>Total</span>
+        <span>Rs {{ total }}</span>
+      </div>
     </div>
   </div>
 
   <!-- RIGHT: Payment & Proceed -->
   <div class="payment-section">
-    <h2>Payment Method</h2>
+    <div class="payment-header">
+      <h2>Select Payment Method</h2>
+      <div class="secure-badge">
+        <span class="secure-icon">🔒</span>
+        Secure Payment
+      </div>
+    </div>
 
-    <form method="post" action="{% url 'products:checkout' %}">
+    <form method="post" action="{% url 'products:checkout' %}" id="checkout-form">
       {% csrf_token %}
       
       <div class="payment-options">
-        <div class="payment-method">
+        <!-- Khalti Option -->
+        <div class="payment-option" data-method="khalti">
           <input type="radio" id="khalti" name="payment_method" value="khalti" checked>
-          <label for="khalti">
-            <span class="payment-icon">📱</span>
-            <span class="payment-label">
-              <strong>Khalti</strong>
-              <small class="payment-note">(Test with: 9800000000 / 1111)</small>
-            </span>
+          <label for="khalti" class="payment-label">
+            <div class="payment-card">
+              <div class="payment-card-header">
+                <div class="payment-icon khalti-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#5C2D91">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div class="payment-title">
+                  <h3>Khalti</h3>
+                  <span class="payment-badge">Popular</span>
+                </div>
+              </div>
+              <div class="payment-card-body">
+                <p class="payment-description">Pay instantly with your Khalti wallet</p>
+                <div class="payment-details">
+                  <span class="detail-item">
+                    <span class="detail-icon">📱</span>
+                    <span class="detail-text">Mobile: 9800000000</span>
+                  </span>
+                  <span class="detail-item">
+                    <span class="detail-icon">🔐</span>
+                    <span class="detail-text">PIN: 1111</span>
+                  </span>
+                </div>
+              </div>
+              <div class="payment-card-footer">
+                <span class="test-badge">Test Mode</span>
+              </div>
+            </div>
           </label>
         </div>
 
-        <div class="payment-method">
+        <!-- eSewa Option -->
+        <div class="payment-option" data-method="esewa">
           <input type="radio" id="esewa" name="payment_method" value="esewa">
-          <label for="esewa">
-            <span class="payment-icon">💳</span>
-            <span class="payment-label">
-              <strong>eSewa</strong>
-              <small class="payment-note">(Test mode available)</small>
-            </span>
+          <label for="esewa" class="payment-label">
+            <div class="payment-card">
+              <div class="payment-card-header">
+                <div class="payment-icon esewa-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#55acee">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <div class="payment-title">
+                  <h3>eSewa</h3>
+                  <span class="payment-badge trending">Trending</span>
+                </div>
+              </div>
+              <div class="payment-card-body">
+                <p class="payment-description">Secure payment through eSewa wallet</p>
+                <div class="payment-details">
+                  <span class="detail-item">
+                    <span class="detail-icon">📱</span>
+                    <span class="detail-text">Mobile: 9800000000</span>
+                  </span>
+                  <span class="detail-item">
+                    <span class="detail-icon">🔐</span>
+                    <span class="detail-text">PIN: 1111</span>
+                  </span>
+                </div>
+              </div>
+              <div class="payment-card-footer">
+                <span class="test-badge">Test Mode</span>
+              </div>
+            </div>
           </label>
         </div>
-
-
       </div>
 
-      <div class="test-info" style="background: #e8f4fc; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #5C2D91;">
-        <h4 style="margin-top: 0; color: #5C2D91;">🛠️ Testing Instructions</h4>
-        <p><strong>For Khalti:</strong> Use mobile: <code>9800000000</code> and PIN: <code>1111</code></p>
-        <p><strong>For eSewa:</strong> Test mode will be activated</p>
-       
+      <!-- Test Info -->
+      <div class="test-info">
+        <div class="test-info-header">
+          <span class="test-icon">🛠️</span>
+          <h4>Testing Instructions</h4>
+        </div>
+        <div class="test-content">
+          <div class="test-method">
+            <span class="method-name">Khalti</span>
+            <span class="method-creds">Mobile: 9800000000 • PIN: 1111</span>
+          </div>
+          <div class="test-method">
+            <span class="method-name">eSewa</span>
+            <span class="method-creds">Mobile: 9800000000 • PIN: 1111</span>
+          </div>
+          <p class="test-note">These credentials work for testing only. No real money will be transferred.</p>
+        </div>
       </div>
 
-      <button type="submit" class="proceed-btn">Proceed to Payment</button>
+      <!-- Submit Button -->
+      <div class="payment-submit">
+        <button type="submit" class="proceed-btn">
+          <span class="btn-icon">💳</span>
+          <span class="btn-text">Proceed to Payment</span>
+          <span class="btn-amount">Rs {{ total }}</span>
+        </button>
+        <p class="secure-note">
+          <span class="secure-icon-small">🔒</span>
+          Your payment is secure and encrypted
+        </p>
+      </div>
     </form>
   </div>
 
 </div>
 
-<!-- Add some inline CSS for better visuals -->
+<!-- Enhanced CSS -->
 <style>
-.payment-options {
-  margin: 20px 0;
+:root {
+  --primary: #5C2D91;
+  --primary-dark: #4a2173;
+  --secondary: #55acee;
+  --secondary-dark: #1c8cd6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
 }
 
-.payment-method {
-  margin: 15px 0;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+.checkout-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Order Summary */
+.order-summary {
   background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-100);
 }
 
-.payment-method:hover {
-  border-color: #5C2D91;
-  background: #f9f5ff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(92, 45, 145, 0.1);
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-100);
 }
 
-.payment-method input[type="radio"] {
-  display: none;
+.summary-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--gray-900);
+  margin: 0;
 }
 
-.payment-method label {
+.edit-cart {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  transition: all 0.2s;
+}
+
+.edit-cart:hover {
+  background: var(--gray-50);
+  border-color: var(--primary);
+}
+
+.cart-items {
+  margin-bottom: 32px;
+}
+
+.cart-item {
   display: flex;
   align-items: center;
-  cursor: pointer;
-  width: 100%;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--gray-100);
+  gap: 16px;
 }
 
-.payment-method input[type="radio"]:checked + label {
-  color: #5C2D91;
-  font-weight: 600;
+.cart-item:last-child {
+  border-bottom: none;
 }
 
-.payment-method input[type="radio"]:checked ~ .payment-method {
-  border-color: #5C2D91;
-  background: #f0e6ff;
+.item-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--gray-200);
 }
 
-.payment-icon {
-  font-size: 24px;
-  margin-right: 15px;
-  width: 40px;
-  text-align: center;
-}
-
-.payment-label {
+.item-info {
   flex: 1;
 }
 
-.payment-label strong {
-  display: block;
-  font-size: 16px;
-  margin-bottom: 4px;
+.item-name {
+  font-weight: 500;
+  color: var(--gray-900);
+  margin: 0 0 4px 0;
+  font-size: 15px;
 }
 
-.payment-note {
-  color: #666;
+.item-quantity {
+  color: var(--gray-600);
+  font-size: 14px;
+  margin: 0 0 4px 0;
+}
+
+.item-price-unit {
+  color: var(--gray-500);
   font-size: 13px;
+  margin: 0;
+}
+
+.item-price-total {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 16px;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.empty-cart p {
+  color: var(--gray-500);
+  margin-bottom: 16px;
+}
+
+.btn-shop {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-shop:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.order-total-section {
+  background: var(--gray-50);
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid var(--gray-200);
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  color: var(--gray-700);
+  font-size: 15px;
+}
+
+.total-row:not(:last-child) {
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.grand-total {
+  font-weight: 700;
+  color: var(--gray-900);
+  font-size: 18px;
+  padding-top: 16px;
+  margin-top: 8px;
+  border-top: 2px solid var(--gray-300);
+}
+
+/* Payment Section */
+.payment-section {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-100);
+}
+
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.payment-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.secure-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gray-50);
+  color: var(--gray-700);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--gray-200);
+}
+
+.secure-icon {
+  font-size: 16px;
+}
+
+/* Payment Options */
+.payment-options {
+  margin-bottom: 32px;
+}
+
+.payment-option {
+  margin-bottom: 16px;
+}
+
+.payment-option input[type="radio"] {
+  display: none;
+}
+
+.payment-label {
   display: block;
+  cursor: pointer;
+}
+
+.payment-card {
+  border: 2px solid var(--gray-200);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.payment-option input[type="radio"]:checked + label .payment-card {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, #f9f5ff 0%, #f3e8ff 100%);
+  box-shadow: 0 8px 32px rgba(92, 45, 145, 0.12);
+  transform: translateY(-2px);
+}
+
+.payment-option:hover .payment-card {
+  border-color: var(--gray-300);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.payment-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.payment-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.khalti-icon {
+  background: rgba(92, 45, 145, 0.1);
+}
+
+.esewa-icon {
+  background: rgba(85, 172, 238, 0.1);
+}
+
+.payment-title {
+  flex: 1;
+}
+
+.payment-title h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 4px 0;
+}
+
+.payment-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.payment-badge.trending {
+  background: var(--secondary);
+}
+
+.payment-card-body {
+  margin-bottom: 20px;
+}
+
+.payment-description {
+  color: var(--gray-600);
+  font-size: 14px;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.payment-details {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gray-50);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-700);
+}
+
+.detail-icon {
+  font-size: 14px;
+}
+
+.detail-text {
+  font-family: 'SF Mono', Monaco, monospace;
+  letter-spacing: 0.3px;
+}
+
+.payment-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.test-badge {
+  background: var(--warning);
+  color: var(--gray-900);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Test Info */
+.test-info {
+  background: linear-gradient(135deg, #e8f4fc 0%, #f0f7ff 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid var(--secondary);
+  border-left: 4px solid var(--secondary);
+}
+
+.test-info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.test-icon {
+  font-size: 20px;
+}
+
+.test-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.test-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+}
+
+.method-name {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 14px;
+}
+
+.method-creds {
+  color: var(--gray-600);
+  font-size: 13px;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.test-note {
+  font-size: 13px;
+  color: var(--gray-600);
+  margin: 12px 0 0 0;
+  text-align: center;
+}
+
+/* Submit Button */
+.payment-submit {
+  margin-top: 32px;
 }
 
 .proceed-btn {
-  background: linear-gradient(135deg, #5C2D91, #8a4dc7);
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   border: none;
-  padding: 18px 40px;
-  font-size: 18px;
+  padding: 20px 32px;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: 600;
-  border-radius: 10px;
   cursor: pointer;
-  width: 100%;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 }
 
 .proceed-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(92, 45, 145, 0.3);
-  background: linear-gradient(135deg, #4a2173, #6d3da3);
+  box-shadow: 0 12px 32px rgba(92, 45, 145, 0.3);
+  background: linear-gradient(135deg, var(--primary-dark) 0%, #3a1959 100%);
 }
 
-.test-info {
-  animation: fadeIn 0.5s ease;
+.proceed-btn:active {
+  transform: translateY(0);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.btn-icon {
+  font-size: 20px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+.btn-text {
+  flex: 1;
+  text-align: center;
+}
+
+.btn-amount {
+  font-size: 18px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.secure-note {
+  text-align: center;
+  color: var(--gray-500);
+  font-size: 13px;
+  margin: 12px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.secure-icon-small {
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
   .checkout-page {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .order-summary,
+  .payment-section {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .checkout-page {
+    margin: 20px auto;
+    padding: 0 16px;
+    gap: 24px;
+  }
+  
+  .summary-header,
+  .payment-header {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
   
-  .order-summary, .payment-section {
-    width: 100% !important;
+  .secure-badge {
+    align-self: flex-start;
   }
   
-  .payment-method {
-    padding: 12px;
+  .payment-card {
+    padding: 20px;
+  }
+  
+  .payment-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .test-method {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .proceed-btn {
+    padding: 18px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .btn-text {
+    order: 1;
+  }
+  
+  .btn-icon {
+    order: 2;
+  }
+  
+  .btn-amount {
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
   }
 }
 </style>
+
+<script>
+// Add interactive behavior
+document.addEventListener('DOMContentLoaded', function() {
+  const paymentOptions = document.querySelectorAll('.payment-option');
+  
+  paymentOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      // Remove active class from all
+      paymentOptions.forEach(opt => {
+        opt.classList.remove('active');
+      });
+      
+      // Add active class to clicked
+      this.classList.add('active');
+      
+      // Update button text based on selected payment
+      const method = this.getAttribute('data-method');
+      const btnText = document.querySelector('.btn-text');
+      
+      if (method === 'khalti') {
+        btnText.textContent = 'Pay with Khalti';
+      } else if (method === 'esewa') {
+        btnText.textContent = 'Pay with eSewa';
+      }
+    });
+  });
+  
+  // Form submission animation
+  const form = document.getElementById('checkout-form');
+  const submitBtn = document.querySelector('.proceed-btn');
+  
+  form.addEventListener('submit', function(e) {
+    const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    
+    if (selectedMethod) {
+      // Add loading state
+      submitBtn.innerHTML = `
+        <span class="btn-icon">⏳</span>
+        <span class="btn-text">Processing ${selectedMethod === 'khalti' ? 'Khalti' : 'eSewa'} Payment</span>
+        <span class="btn-amount">Rs {{ total }}</span>
+      `;
+      submitBtn.disabled = true;
+    }
+  });
+});
+</script>
 
 {% endblock %}
