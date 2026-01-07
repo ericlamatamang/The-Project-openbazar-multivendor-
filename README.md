@@ -3,6 +3,7 @@ OpenBazar 🛍️
 A Django-based e-commerce platform built to explore full-stack development and online shopping workflows. OpenBazar allows users to browse products, manage carts, and complete payments, while providing an admin panel for easy product management.
 
 Features :
+
 -User authentication: sign up, login, and profile management
 
 -Product catalog with detailed pages and descriptions
