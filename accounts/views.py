@@ -32,6 +32,11 @@ def register_view(request):
             messages.error(request, "User with this email already exists.")
             return redirect("accounts:register")
 
+        # Check if phone number already exists in profiles
+        if Profile.objects.filter(phone=phone).exists():
+            messages.error(request, "Phone number already registered.")
+            return redirect("accounts:register")
+
         # Create user
         user = User.objects.create_user(username=username, email=email, password=password)
         user.first_name = first_name
@@ -50,7 +55,6 @@ def register_view(request):
         return redirect("accounts:profile")
 
     return render(request, "accounts/register.html")
-
 
 def login_view(request):
     if request.method == "POST":

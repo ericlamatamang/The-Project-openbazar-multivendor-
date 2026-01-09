@@ -16,7 +16,7 @@
         <div>Product: {{ item.product.name }}</div>
         <div>Buyer: {{ item.order.buyer.username }}</div>
         <div>Quantity: {{ item.quantity }}</div>
-        <div>Price: RS{{ item.price }}</div>
+        <div>Price: RS{{ item.order.total_amount }}</div>
         <div>Ordered At: {{ item.order.created_at|date:"M d, Y H:i" }}</div>
         <div>address: {{ item.order.buyer.profile.address }}</div>
         <div>

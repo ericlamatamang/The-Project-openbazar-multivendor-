@@ -21,8 +21,9 @@
         <input type="email" name="email" placeholder="Email" required>
         <input type="text" name="first_name" placeholder="First Name" required>
         <input type="text" name="last_name" placeholder="Last Name" required>
-        <input type="tel" name="phone" placeholder="Phone Number" required>
-
+        <input type="tel" name="phone" placeholder="Phone Number (e.g., +9771234567890)" 
+               pattern="\+[0-9]{10,15}" required>
+        
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="password2" placeholder="Confirm Password" required>
 
@@ -34,5 +35,21 @@
         </p>
     </form>
 </div>
+
+<script>
+    // Simple phone number validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneField = document.querySelector('input[name="phone"]');
+        
+        phoneField.addEventListener('blur', function() {
+            const phonePattern = /^\+[0-9]{10,15}$/;
+            if (!phonePattern.test(this.value)) {
+                this.setCustomValidity('Please enter a valid phone number starting with + (e.g., +1234567890)');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    });
+</script>
 
 {% endblock %}

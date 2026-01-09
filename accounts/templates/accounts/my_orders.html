@@ -27,7 +27,7 @@
                 <div class="order-item-details">
                     <p class="item-name">{{ item.product.name }}</p>
                     <p class="item-quantity">Quantity: {{ item.quantity }}</p>
-                    <p class="item-price">Price: RS{{ item.price }}</p>
+                    <p class="item-price">Price: RS{{  order.total_amount }}</p>
                 </div>
             </li>
             {% endfor %}
