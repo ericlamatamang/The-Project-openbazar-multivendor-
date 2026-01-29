@@ -2,9 +2,11 @@
 {% load static %}
 {% block title %}{{ product.name }} - Product Detail{% endblock %}
 {% block content %}
- <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
 <div class="product-page">
 
   <!-- LEFT : IMAGE -->
@@ -18,19 +20,33 @@
   <div class="product-info">
 
     <h1>{{ product.name }}</h1>
-    <p class="price">RS{{ product.price }}</p>
+    <p class="price">RS {{ product.price }}</p>
 
-    <!-- QUANTITY -->
-    <div class="option">
-      <label>Quantity *</label>
-      <div class="quantity-box">
-        <button type="button">−</button>
-        <input type="number" value="1" min="1">
-        <button type="button">+</button>
-      </div>
+<form action="{% url 'products:add_to_cart' product.id %}" method="post">
+  {% csrf_token %}
+
+  <!-- QUANTITY -->
+  <div class="option">
+    <label>Quantity *</label>
+    <div class="quantity-box">
+      <button type="button" id="decrease">−</button>
+      <input
+        type="number"
+        id="quantity"
+        name="quantity"
+        value="1"
+        min="1"
+        max="15"
+      >
+      <button type="button" id="increase">+</button>
     </div>
+    <small style="color:#777;">Max 15 items allowed</small>
+  </div>
 
-    
+  <button type="submit">Add to Cart</button>
+</form>
+
+
     <!-- ACCORDION -->
     <div class="accordion">
       <details open>
@@ -38,17 +54,40 @@
         <p>{{ product.description }}</p>
       </details>
     </div>
-<form action="{% url 'products:add_to_cart' product.id %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Add to Cart</button>
-</form>
-
 
     <div class="back-link">
-      <a href="{% url 'products:product_list' %}" class="back-link">← Back to Products</a>
+      <a href="{% url 'products:product_list' %}">← Back to Products</a>
     </div>
-</div>
+
   </div>
-</body>
-</html>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const qtyInput = document.getElementById("quantity");
+  const btnPlus = document.getElementById("increase");
+  const btnMinus = document.getElementById("decrease");
+
+  btnPlus.addEventListener("click", () => {
+    let value = parseInt(qtyInput.value) || 1;
+    if (value < 15) {
+      qtyInput.value = value + 1;
+    }
+  });
+
+  btnMinus.addEventListener("click", () => {
+    let value = parseInt(qtyInput.value) || 1;
+    if (value > 1) {
+      qtyInput.value = value - 1;
+    }
+  });
+
+  // Prevent manual invalid input
+  qtyInput.addEventListener("input", () => {
+    if (qtyInput.value > 15) qtyInput.value = 15;
+    if (qtyInput.value < 1) qtyInput.value = 1;
+  });
+});
+</script>
+
 {% endblock %}

@@ -1,52 +1,101 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Login{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Profile</title>
-  <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
-    
-</head>
-<body>
+<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
 
-  <div class="container">
-    <h2>Edit Profile</h2>
-    <form method="POST">
-      {% csrf_token %}
-      <div class="card">
+<div class="container">
+  <h2>Edit Profile</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="card">
+
+      <!-- First Name -->
       <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input type="text" name="first_name" value="{{ user.first_name }}">
+        <label>First Name</label>
+        <input type="text" name="first_name" id="first_name"
+               value="{{ user.first_name }}" required>
       </div>
+
+      <!-- Last Name -->
       <div class="form-group">
-        <label for="last_name">Last Name</label>
-        <input type="text" name="last_name" value="{{ user.last_name }}">
+        <label>Last Name</label>
+        <input type="text" name="last_name" id="last_name"
+               value="{{ user.last_name }}" required>
       </div>
+
+      <!-- Email -->
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" value="{{ user.email }}">
+        <label>Email</label>
+        <input type="email" name="email" id="email"
+               value="{{ user.email }}" required>
       </div>
+
+      <!-- Phone -->
       <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="text" name="phone" value="{{ user.profile.phone }}">
+        <label>Phone</label>
+        <input type="text" name="phone" id="phone"
+               value="{{ user.profile.phone }}" required>
       </div>
+
+      <!-- Address (no verification needed) -->
       <div class="form-group">
-        <label for="address">Address</label>
-        <input type="text" name="address" value="{{ user.profile.address }}">
+        <label>Address</label>
+        <input type="text" name="address"
+               value="{{ user.profile.address }}">
       </div>
+
       <button type="submit">Save Changes</button>
-    </form>
-
-  </div>
+    </div>
+  </form>
 </div>
-</body>
-</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const firstName = document.getElementById("first_name");
+  const lastName = document.getElementById("last_name");
+  const email = document.getElementById("email");
+  const phone = document.getElementById("phone");
+
+  /* ---------- NAME VERIFICATION ---------- */
+  function validateName(field) {
+    const pattern = /^[A-Za-z ]{2,}$/;
+    field.setCustomValidity(
+      pattern.test(field.value)
+      ? ""
+      : "Only letters allowed (min 2 characters)"
+    );
+  }
+
+  firstName.addEventListener("input", () => validateName(firstName));
+  lastName.addEventListener("input", () => validateName(lastName));
+
+  /* ---------- EMAIL VERIFICATION ---------- */
+  email.addEventListener("input", () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    email.setCustomValidity(
+      emailPattern.test(email.value)
+      ? ""
+      : "Enter a valid email address"
+    );
+  });
+
+  /* ---------- NEPALI PHONE VERIFICATION ---------- */
+  phone.addEventListener("input", () => {
+    const phonePattern = /^(98|97)[0-9]{8}$/;
+    phone.setCustomValidity(
+      phonePattern.test(phone.value)
+      ? ""
+      : "Enter valid Nepali number (98XXXXXXXX or 97XXXXXXXX)"
+    );
+  });
+
+});
+</script>
 
 {% endblock %}

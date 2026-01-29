@@ -185,23 +185,36 @@ def cart_detail(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
     return render(request, 'products/cart.html', {'cart': cart})
 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, _ = Cart.objects.get_or_create(user=request.user)
 
+    # Get quantity from POST
+    quantity = int(request.POST.get('quantity', 1))
+
+    # Safety limit (important)
+    quantity = max(1, min(quantity, 15))
+
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
         product=product,
-        defaults={'quantity': 1}
     )
 
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
+    if created:
+        cart_item.quantity = quantity
+    else:
+        cart_item.quantity += quantity
+        # Optional: cap total at 15
+        cart_item.quantity = min(cart_item.quantity, 15)
+
+    cart_item.save()
 
     return redirect('products:cart')
+
 
 
 @login_required

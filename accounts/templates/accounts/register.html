@@ -11,21 +11,30 @@
 <div class="login-box">
     <h2>Create Account</h2>
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
-
     <form method="POST" action="{% url 'accounts:register' %}">
         {% csrf_token %}
 
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="first_name" placeholder="First Name" required>
-        <input type="text" name="last_name" placeholder="Last Name" required>
-        <input type="tel" name="phone" placeholder="Phone Number (e.g., +9771234567890)" 
-               pattern="\+[0-9]{10,15}" required>
-        
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="password2" placeholder="Confirm Password" required>
+        <!-- Email -->
+        <input type="email" name="email" id="email"
+               placeholder="Email Address" required>
+
+        <!-- Name -->
+        <input type="text" name="first_name" id="first_name"
+               placeholder="First Name" required>
+
+        <input type="text" name="last_name" id="last_name"
+               placeholder="Last Name" required>
+
+        <!-- Nepali Phone -->
+        <input type="tel" name="phone" id="phone"
+               placeholder="98XXXXXXXX" required>
+
+        <!-- Password -->
+        <input type="password" name="password" id="password"
+               placeholder="Password" required>
+
+        <input type="password" name="password2" id="password2"
+               placeholder="Confirm Password" required>
 
         <button type="submit">Sign Up</button>
 
@@ -37,19 +46,72 @@
 </div>
 
 <script>
-    // Simple phone number validation
-    document.addEventListener('DOMContentLoaded', function() {
-        const phoneField = document.querySelector('input[name="phone"]');
-        
-        phoneField.addEventListener('blur', function() {
-            const phonePattern = /^\+[0-9]{10,15}$/;
-            if (!phonePattern.test(this.value)) {
-                this.setCustomValidity('Please enter a valid phone number starting with + (e.g., +1234567890)');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
+document.addEventListener("DOMContentLoaded", () => {
+
+    const email = document.getElementById("email");
+    const firstName = document.getElementById("first_name");
+    const lastName = document.getElementById("last_name");
+    const phone = document.getElementById("phone");
+    const password = document.getElementById("password");
+    const password2 = document.getElementById("password2");
+
+    /* ---------- EMAIL VERIFICATION ---------- */
+    email.addEventListener("input", () => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        email.setCustomValidity(
+            emailPattern.test(email.value)
+            ? ""
+            : "Enter a valid email address"
+        );
     });
+
+    /* ---------- NAME VERIFICATION ---------- */
+    function validateName(field) {
+        const namePattern = /^[A-Za-z ]{2,}$/;
+        field.setCustomValidity(
+            namePattern.test(field.value)
+            ? ""
+            : "Only letters, minimum 2 characters"
+        );
+    }
+
+    firstName.addEventListener("input", () => validateName(firstName));
+    lastName.addEventListener("input", () => validateName(lastName));
+
+    /* ---------- NEPALI PHONE VERIFICATION ---------- */
+    phone.addEventListener("input", () => {
+        const phonePattern = /^(98|97)[0-9]{8}$/;
+        phone.setCustomValidity(
+            phonePattern.test(phone.value)
+            ? ""
+            : "Enter valid Nepali number (98XXXXXXXX or 97XXXXXXXX)"
+        );
+    });
+
+    /* ---------- PASSWORD STRENGTH ---------- */
+    password.addEventListener("input", () => {
+        const strongPassword =
+            password.value.length >= 8 &&
+            /[A-Z]/.test(password.value) &&
+            /[0-9]/.test(password.value);
+
+        password.setCustomValidity(
+            strongPassword
+            ? ""
+            : "Password must be 8+ chars, include number & capital letter"
+        );
+    });
+
+    /* ---------- CONFIRM PASSWORD ---------- */
+    password2.addEventListener("input", () => {
+        password2.setCustomValidity(
+            password.value === password2.value
+            ? ""
+            : "Passwords do not match"
+        );
+    });
+
+});
 </script>
 
 {% endblock %}
