@@ -27,7 +27,19 @@
                 <a href="{% url 'accounts:register' %}">SIGN IN</a>
             </p>
         </form>
+
+        <!-- Message Display Below Form -->
+        {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message-box alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
+</body>
 </body>
 </html>
 {% endblock %}

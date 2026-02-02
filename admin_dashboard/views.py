@@ -219,6 +219,35 @@ def payments_view(request):
 
 
 @staff_member_required
+def vendors_view(request):
+    """List all vendors for admin with delete action."""
+    try:
+        vendors = Vendor.objects.select_related('user').order_by('-id')
+    except Exception:
+        vendors = []
+    return render(request, 'admin_dashboard/vendors.html', {'vendors': vendors})
+
+
+@staff_member_required
+@require_POST
+def delete_vendor(request, vendor_id):
+    v = get_object_or_404(Vendor, id=vendor_id)
+    username = v.user.username
+    # deactivate and optionally delete user
+    try:
+        user = v.user
+        user.is_active = False
+        user.save()
+    except Exception:
+        pass
+
+    v.delete()
+    ActivityLog.objects.create(user=request.user, action=f"Deleted vendor {username} and deactivated user")
+    messages.success(request, f'Vendor {username} deleted and user deactivated.')
+    return redirect(reverse('admin_dashboard:vendors'))
+
+
+@staff_member_required
 def delete_order(request, order_id):
     """Delete an order (POST only). Logs the action in ActivityLog and redirects back.
 
@@ -285,6 +314,31 @@ def approve_vendor(request, vendor_id):
     else:
         messages.error(request, 'Unknown action.')
 
+    return redirect(reverse('admin_dashboard:home'))
+
+
+@staff_member_required
+@require_POST
+def reject_vendor(request, vendor_id):
+    """Explicit reject endpoint to ensure reject action always works.
+
+    This will mark the vendor as not approved and deactivate the associated user account.
+    """
+    v = get_object_or_404(Vendor, id=vendor_id)
+    username = v.user.username
+    # Deactivate user account and remove vendor record so it no longer appears as pending
+    try:
+        user = v.user
+        user.is_active = False
+        user.save()
+    except Exception:
+        pass
+
+    # delete vendor entry
+    v.delete()
+
+    ActivityLog.objects.create(user=request.user, action=f"Rejected vendor {username} (vendor record removed)")
+    messages.success(request, f'Vendor {username} rejected and removed.')
     return redirect(reverse('admin_dashboard:home'))
 
 

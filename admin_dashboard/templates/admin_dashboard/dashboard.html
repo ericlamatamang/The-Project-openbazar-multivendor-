@@ -69,9 +69,8 @@
                   <input type="hidden" name="action" value="approve">
                   <button class="btn btn-sm btn-success">Approve</button>
                 </form>
-                <form method="post" action="{% url 'admin_dashboard:approve_vendor' v.id %}" style="display:inline">
+                <form method="post" action="{% url 'admin_dashboard:reject_vendor' v.id %}" style="display:inline">
                   {% csrf_token %}
-                  <input type="hidden" name="action" value="reject">
                   <button class="btn btn-sm btn-outline-danger">Reject</button>
                 </form>
               </div>

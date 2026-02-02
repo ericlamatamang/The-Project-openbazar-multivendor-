@@ -2,11 +2,13 @@
   <div class="sidebar-brand mb-3">
     <h4>OpenBazar Admin</h4>
   </div>
+  {% load admin_extras %}
   <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'admin_dashboard:home' %}"><i class="fa fa-tachometer-alt"></i><span class="label"> Dashboard</span></a></li>
     <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'products' %}active{% endif %}" href="{% url 'admin_dashboard:products' %}"><i class="fa fa-box-open"></i><span class="label"> Products</span></a></li>
     <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'orders' %}active{% endif %}" href="{% url 'admin_dashboard:orders' %}"><i class="fa fa-shopping-cart"></i><span class="label"> Orders</span></a></li>
     <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'users' %}active{% endif %}" href="{% url 'admin_dashboard:users' %}"><i class="fa fa-users"></i><span class="label"> Users</span></a></li>
+    <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'vendors' %}active{% endif %}" href="{% url 'admin_dashboard:vendors' %}"><i class="fa fa-store"></i><span class="label"> Vendors</span> <span class="badge bg-light text-dark ms-2">{% get_vendor_count %}</span></a></li>
     <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'payments' %}active{% endif %}" href="{% url 'admin_dashboard:payments' %}"><i class="fa fa-credit-card"></i><span class="label"> Payments</span></a></li>
   </ul>
 

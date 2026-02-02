@@ -1,0 +1,37 @@
+{% extends 'admin_dashboard/base_admin.html' %}
+{% block content %}
+<div class="container-fluid">
+  <div class="card p-3">
+    <h6>Vendors</h6>
+    <div class="table-responsive">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Approved</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in vendors %}
+          <tr>
+            <td>{{ v.user.get_full_name|default:v.user.username }}</td>
+            <td>{{ v.user.email }}</td>
+            <td>{% if v.is_approved %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-warning text-dark">No</span>{% endif %}</td>
+            <td>
+              <form method="post" action="{% url 'admin_dashboard:delete_vendor' v.id %}" style="display:inline">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete vendor {{ v.user.username }}? This will deactivate the user.')">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">No vendors found</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
