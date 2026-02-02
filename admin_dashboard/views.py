@@ -145,7 +145,7 @@ def dashboard(request):
         pending_vendors = []
 
     try:
-        pending_products = Product.objects.filter(is_approved=False).select_related('vendor')[:8]
+        pending_products = Product.objects.filter(is_approved=False).select_related('vendor', 'vendor__user')[:8]
     except Exception:
         pending_products = []
 
@@ -181,7 +181,7 @@ def dashboard(request):
 @staff_member_required
 def products_view(request):
     products = Product.objects.all().order_by('-id')
-    return render(request, 'admin_dashboard/products.html', {'products': products})
+    return render(request, 'admin_dashboard/products.html', {'products': products, 'filter': 'all'})
 
 
 @staff_member_required
