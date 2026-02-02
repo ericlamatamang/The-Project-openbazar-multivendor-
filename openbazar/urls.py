@@ -21,6 +21,7 @@ from core.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dashboard/', include('admin_dashboard.urls')),
     path('', include('core.urls')),  # connect main page
     path('products/', include('products.urls')),
     path("accounts/", include("accounts.urls")),

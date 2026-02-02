@@ -1,0 +1,142 @@
+{% extends 'admin_dashboard/base_admin.html' %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row g-3">
+    <div class="col-12 col-md-3">
+      <div class="card p-3">
+        <div class="card-body">
+          <h6>Total Users</h6>
+          <h3>{{ total_users }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="card p-3">
+        <div class="card-body">
+          <h6>Total Products</h6>
+          <h3>{{ total_products }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="card p-3">
+        <div class="card-body">
+          <h6>Total Orders</h6>
+          <h3>{{ total_orders }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="card p-3">
+          <div class="card-body">
+          <h6>Total Revenue</h6>
+          <h3>Rs {{ total_revenue|floatformat:2 }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h6>Orders (Last 7 days)</h6>
+        <canvas id="ordersLast7" height="120"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h6>Order Status Distribution</h6>
+        <canvas id="statusPie" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-lg-8">
+      <div class="card p-3">
+        <h6>Recent Orders</h6>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>User</th>
+                <th>Product(s)</th>
+                <th>Vendor(s)</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for o in recent_orders %}
+                <tr>
+                  <td>#{{ o.id }}</td>
+                  <td>{{ o.user_name }}</td>
+                  <td>
+                    {% if o.product_list %}
+                      {{ o.product_list|join:", " }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if o.vendor_list %}
+                      {{ o.vendor_list|join:", " }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                  <td>Rs {{ o.total_amount|floatformat:2 }}</td>
+                  <td>{{ o.status }}</td>
+                  <td>
+                    <form method="post" action="{% url 'admin_dashboard:delete_order' o.id %}" style="display:inline">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete order #{{ o.id }}? This cannot be undone.');">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="7">No recent orders</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card p-3 mb-3">
+        <h6>Recent Users</h6>
+        <ul class="list-unstyled mb-0">
+          {% for u in recent_users %}
+            <li class="py-2 border-bottom">{{ u.get_full_name|default:u.username }} <br><small class="text-muted">{{ u.email }}</small></li>
+          {% empty %}
+            <li>No users</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card p-3">
+        <h6>Admin Activity</h6>
+        <ul class="list-unstyled mb-0">
+          {% for a in activities %}
+            <li class="py-2 border-bottom">{{ a.timestamp|date:'Y-m-d H:i' }} — {{ a.user }} — {{ a.action }}</li>
+          {% empty %}
+            <li>No activity yet</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+  const ordersLast7 = JSON.parse('{{ chart_orders_last7_json|escapejs }}');
+  const statusData = JSON.parse('{{ status_qs_json|escapejs }}');
+
+  // ordersLast7: [{date:'YYYY-MM-DD','orders':N}, ...]
+  initOrdersChart('ordersLast7', ordersLast7);
+  initStatusPie('statusPie', statusData);
+</script>
+{% endblock %}

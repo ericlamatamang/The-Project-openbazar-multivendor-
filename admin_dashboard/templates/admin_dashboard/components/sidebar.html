@@ -1,0 +1,13 @@
+<nav class="bg-light border-end admin-sidebar p-3">
+  <div class="sidebar-brand mb-3">
+    <h4>OpenBazar Admin</h4>
+  </div>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard:home' %}"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard:products' %}"><i class="fa fa-box-open me-2"></i>Products</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard:orders' %}"><i class="fa fa-shopping-cart me-2"></i>Orders</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard:users' %}"><i class="fa fa-users me-2"></i>Users</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard:payments' %}"><i class="fa fa-credit-card me-2"></i>Payments</a></li>
+    <li class="nav-item mt-3"><a class="nav-link text-danger" href="{% url 'admin:logout' %}"><i class="fa fa-sign-out-alt me-2"></i>Logout</a></li>
+  </ul>
+</nav>

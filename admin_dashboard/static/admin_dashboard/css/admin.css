@@ -1,0 +1,12 @@
+/* Basic admin dashboard styles, responsive and clean */
+body.admin-body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#f5f7fa;}
+.admin-sidebar{width:240px; min-height:100vh}
+.admin-main{min-height:100vh}
+.admin-navbar{background:#fff}
+.admin-sidebar .nav-link{color:#333}
+.card{border-radius:8px}
+.sidebar-brand h4{margin:0}
+
+@media (max-width: 768px){
+  .admin-sidebar{display:none}
+}

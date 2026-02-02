@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'orders',
     'core',
     'vendors',
+    'admin_dashboard',
 ]
 
 MIDDLEWARE = [

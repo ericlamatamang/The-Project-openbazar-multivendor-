@@ -1,0 +1,30 @@
+{% extends 'admin_dashboard/base_admin.html' %}
+{% block content %}
+<div class="container-fluid">
+  <h4>Orders</h4>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for o in orders %}
+          <tr>
+            <td>#{{ o.id }}</td>
+            <td>{{ o.buyer_name }}</td>
+            <td>Rs {{ o.total_amount|floatformat:2 }}</td>
+            <td>{{ o.status }}</td>
+            <td>{{ o.created_at }}</td>
+              <td>
+                <form method="post" action="{% url 'admin_dashboard:delete_order' o.id %}" style="display:inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete order #{{ o.id }}?');">Delete</button>
+                </form>
+              </td>
+          </tr>
+        {% empty %}
+            <tr><td colspan="6">No orders</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
