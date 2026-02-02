@@ -4,7 +4,7 @@
   <h4>Users</h4>
   <div class="table-responsive">
     <table class="table table-striped">
-      <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+      <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Joined</th><th>Actions</th></tr></thead>
       <tbody>
         {% for u in users %}
           <tr>
@@ -12,6 +12,18 @@
             <td>{{ u.get_full_name|default:u.username }}</td>
             <td>{{ u.email }}</td>
             <td>{{ u.date_joined|date:'Y-m-d' }}</td>
+            <td class="actions">
+              <form method="post" action="{% url 'admin_dashboard:toggle_user_active' u.id %}" style="display:inline">
+                {% csrf_token %}
+                {% if u.is_active %}
+                  <input type="hidden" name="action" value="deactivate">
+                  <button class="btn btn-sm btn-outline-danger">Deactivate</button>
+                {% else %}
+                  <input type="hidden" name="action" value="activate">
+                  <button class="btn btn-sm btn-success">Activate</button>
+                {% endif %}
+              </form>
+            </td>
           </tr>
         {% empty %}
           <tr><td colspan="4">No users</td></tr>

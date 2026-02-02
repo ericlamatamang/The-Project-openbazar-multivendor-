@@ -4,18 +4,32 @@
   <h4>Products</h4>
   <div class="table-responsive">
     <table class="table table-striped">
-      <thead><tr><th>ID</th><th>Title</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+      <thead><tr><th>ID</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead>
       <tbody>
         {% for p in products %}
           <tr>
             <td>{{ p.id }}</td>
             <td>{{ p.name }}</td>
             <td>Rs {{ p.price|floatformat:2 }}</td>
-            <td>{{ p.stock|default:'-' }}</td>
-            <td><a class="btn btn-sm btn-outline-primary" href="#">Edit</a></td>
+            <td>
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'admin_dashboard:edit_product' p.id %}">Edit</a>
+              {% if not p.is_approved %}
+                <form method="post" action="{% url 'admin_dashboard:approve_product' p.id %}" style="display:inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="approve">
+                  <button class="btn btn-sm btn-success">Approve</button>
+                </form>
+              {% else %}
+                <form method="post" action="{% url 'admin_dashboard:approve_product' p.id %}" style="display:inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="disable">
+                  <button class="btn btn-sm btn-outline-danger">Disable</button>
+                </form>
+              {% endif %}
+            </td>
           </tr>
         {% empty %}
-          <tr><td colspan="5">No products</td></tr>
+          <tr><td colspan="4">No products</td></tr>
         {% endfor %}
       </tbody>
     </table>

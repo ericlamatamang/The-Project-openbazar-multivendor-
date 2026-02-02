@@ -10,7 +10,14 @@
           <tr>
             <td>{{ p.id }}</td>
             <td>#{{ p.order.id }}</td>
-            <td>{{ p.user }}</td>
+            <td>
+              {% if p.order and p.order.buyer %}
+                {{ p.order.buyer.get_full_name|default:p.order.buyer.username }}
+                <br><small class="text-muted">{{ p.order.buyer.email }}</small>
+              {% else %}
+                —
+              {% endif %}
+            </td>
             <td>Rs {{ p.amount|floatformat:2 }}</td>
             <td>{{ p.status }}</td>
           </tr>

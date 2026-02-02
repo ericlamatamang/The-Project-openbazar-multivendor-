@@ -1,0 +1,14 @@
+{% extends 'admin_dashboard/base_admin.html' %}
+{% block content %}
+<div class="container-fluid">
+  <div class="card p-3">
+    <h4>Create User</h4>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary" type="submit">Create</button>
+      <a href="{% url 'admin_dashboard:home' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
