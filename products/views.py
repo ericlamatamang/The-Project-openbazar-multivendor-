@@ -147,7 +147,7 @@ def test_esewa_initiate(request):
 
 @login_required
 def buy_now(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(is_approved=True)
     return render(request, 'products/list.html', {'products': products})
 
 
@@ -164,9 +164,9 @@ def sell_now(request):
     return redirect('vendor_dashboard')
 
 def product_list(request):
-    foods_bakery = Product.objects.filter(category='Foods & Bakery')
-    crochet = Product.objects.filter(category='Crochet')
-    fashion_clothes = Product.objects.filter(category='Fashion (Clothes)')
+    foods_bakery = Product.objects.filter(category='Foods & Bakery', is_approved=True)
+    crochet = Product.objects.filter(category='Crochet', is_approved=True)
+    fashion_clothes = Product.objects.filter(category='Fashion (Clothes)', is_approved=True)
 
     return render(request, 'products/product_list.html', {
         'foods_bakery': foods_bakery,
@@ -176,7 +176,7 @@ def product_list(request):
 
 
 def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, id=product_id, is_approved=True)
     return render(request, 'products/product_detail.html', {'product': product})
 
 
@@ -257,6 +257,13 @@ def vendor_orders(request):
 def add_product(request):
     if request.method == "POST":
         vendor = Vendor.objects.get(user=request.user)
+
+        # Prevent vendors that are not approved from adding products
+        if not getattr(vendor, 'is_approved', False):
+            # show a simple page or redirect to vendor dashboard with message
+            from django.contrib import messages
+            messages.warning(request, "Your vendor account is pending approval. You cannot add products yet.")
+            return redirect('vendors:dashboard')
 
         Product.objects.create(
             name=request.POST["name"],
